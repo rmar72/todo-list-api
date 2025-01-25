@@ -2,6 +2,8 @@ import { Request, Response, RequestHandler } from 'express';
 import { getAllTasks, createNewTask } from '../services/task.service'
 import { TaskInput } from '../../../types/task';
 import { z } from 'zod';
+import { allowedColors } from '../constants';
+
 
 export const getTasks = async (req: Request, res: Response) => {
   try {
@@ -15,7 +17,11 @@ export const getTasks = async (req: Request, res: Response) => {
 
 const taskSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
-  color: z.string().min(1, { message: 'Color is required' }),
+  color: z.string()
+    .min(1, { message: 'Color is required' }) // Ensure it's not empty
+    .refine((value) => allowedColors.includes(value), {
+      message: `Color must be one of: ${allowedColors.join(', ')}`,
+    }),
   completed: z.boolean(),
 });
 
