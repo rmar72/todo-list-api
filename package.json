@@ -1,0 +1,44 @@
+{
+  "name": "todo-list-api",
+  "version": "1.0.0",
+  "description": "Take home code assesment",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "ts-node-dev src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.2.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "prisma": "^6.2.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.10.10",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rmar72/todo-list-api.git"
+  },
+  "keywords": [],
+  "author": "Ruben Solorio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rmar72/todo-list-api/issues"
+  },
+  "homepage": "https://github.com/rmar72/todo-list-api#readme"
+}
