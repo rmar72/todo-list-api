@@ -15,3 +15,17 @@ export const createNewTask = async (data: TaskInput ) => {
     }
   });
 };
+
+export const deleteTaskById = async (id: number) => {
+  const task = await prisma.task.findUnique({
+    where: { id },
+  });
+
+  if (!task) {
+    return null;
+  }
+
+  return prisma.task.delete({
+    where: { id },
+  });
+};

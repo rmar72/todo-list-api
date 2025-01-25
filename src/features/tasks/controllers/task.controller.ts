@@ -1,8 +1,9 @@
 import { Request, Response, RequestHandler } from 'express';
-import { getAllTasks, createNewTask } from '../services/task.service'
+import { getAllTasks, createNewTask, deleteTaskById } from '../services/task.service'
 import { TaskInput } from '../../../types/task';
 import { z } from 'zod';
 import { allowedColors } from '../constants';
+import logger from '../../../utils/logger';
 
 
 export const getTasks = async (req: Request, res: Response) => {
@@ -10,7 +11,7 @@ export const getTasks = async (req: Request, res: Response) => {
     const tasks = await getAllTasks()
     res.status(200).json(tasks)
   } catch (error) {
-    console.error('Error fetching tasks:', error);
+    logger.error(`Error fetching task: ${error}`);
     res.status(500).json({ error: 'Failed to fetch tasks' })
   }
 }
@@ -41,7 +42,30 @@ export const createTask: RequestHandler = async (req, res): Promise<void> => {
     res.status(201).json(newTask);
     return
   } catch (error) {
-    console.error('Error fetching tasks:', error);
-    res.status(500).json({ error: 'Failed to fetch tasks' })
+    logger.error(`Error creating task: ${error}`);
+    res.status(500).json({ error: 'Failed to create task' })
   }
 }
+
+export const deleteTask: RequestHandler = async (req, res): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    if (!id || isNaN(Number(id))) {
+      res.status(400).json({ error: 'Invalid task ID' });
+      return;
+    }
+
+    const deletedTask = await deleteTaskById(Number(id));
+
+    if (!deletedTask) {
+      res.status(404).json({ error: 'Task not found' });
+      return;
+    }
+
+    res.status(200).json({ message: 'Task deleted successfully' });
+  } catch (error) {
+    logger.error(`Error deleting task: ${error}`);
+    res.status(500).json({ error: 'Failed to delete task' });
+  }
+};
