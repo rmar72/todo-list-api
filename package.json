@@ -11,10 +11,12 @@
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "body-parser": "^1.20.3",
+    "cfonts": "^3.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "prisma": "^6.2.1",
+    "winston": "^3.17.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
