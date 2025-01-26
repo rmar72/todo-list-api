@@ -1,10 +1,9 @@
 import { Request, Response, RequestHandler } from 'express';
-import { getAllTasks, createNewTask, deleteTaskById } from '../services/task.service'
+import { getAllTasks, createNewTask, deleteTaskById, updateTaskById } from '../services/task.service'
 import { TaskInput } from '../../../types/task';
 import { z } from 'zod';
 import { allowedColors } from '../constants';
 import logger from '../../../utils/logger';
-
 
 export const getTasks = async (req: Request, res: Response) => {
   try {
@@ -69,3 +68,38 @@ export const deleteTask: RequestHandler = async (req, res): Promise<void> => {
     res.status(500).json({ error: 'Failed to delete task' });
   }
 };
+
+const taskUpdateSchema = z.object({
+  title: z.string().optional(),
+  color: z.string().optional(),
+  completed: z.boolean().optional(),
+});
+
+export const updateTask: RequestHandler = async (req, res): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    if (!id || isNaN(Number(id))) {
+      res.status(400).json({ error: 'Invalid task ID' });
+      return;
+    }
+
+    const parsedData = taskUpdateSchema.safeParse(req.body);
+    if (!parsedData.success) {
+      res.status(400).json({ error: parsedData.error.errors[0].message });
+      return;
+    }
+
+    const updatedTask = await updateTaskById(Number(id), parsedData.data);
+
+    if (!updatedTask) {
+      res.status(404).json({ error: 'Task not found' });
+      return;
+    }
+
+    res.status(200).json(updatedTask);
+  } catch (error) {
+    logger.error(`Error updating task: ${error}`);
+    res.status(500).json({ error: 'Failed to update task' });
+  }
+}

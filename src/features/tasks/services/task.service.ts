@@ -29,3 +29,14 @@ export const deleteTaskById = async (id: number) => {
     where: { id },
   });
 };
+
+export const updateTaskById = async (id: number, data: { title?: string; color?: string; completed?: boolean }) => {
+  try {
+    return await prisma.task.update({
+      where: { id },
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
