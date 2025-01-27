@@ -1,1 +1,1 @@
-export const allowedColors = ['red', 'blue', 'green', 'yellow', 'purple'];
+export const allowedColors = ['red', 'blue', 'green', 'yellow', 'purple', 'brown', 'orange', 'pink'];
